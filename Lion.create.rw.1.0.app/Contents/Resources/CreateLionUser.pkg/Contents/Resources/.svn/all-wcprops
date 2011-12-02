@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/!svn/ver/425/trunk/AddOns/createUser/CreateLionUser.pkg/Contents/Resources
+END
+package_version
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/!svn/ver/425/trunk/AddOns/createUser/CreateLionUser.pkg/Contents/Resources/package_version
+END
+userdata.plist
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/!svn/ver/425/trunk/AddOns/createUser/CreateLionUser.pkg/Contents/Resources/userdata.plist
+END
+postflight
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/!svn/ver/425/trunk/AddOns/createUser/CreateLionUser.pkg/Contents/Resources/postflight
+END
+hash_lion_password.py
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/!svn/ver/425/trunk/AddOns/createUser/CreateLionUser.pkg/Contents/Resources/hash_lion_password.py
+END

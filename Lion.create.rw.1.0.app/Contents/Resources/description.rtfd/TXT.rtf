@@ -1,0 +1,140 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1038\cocoasubrtf360
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\tx7280\tx7840\tx8400\tx8960\tx9520\tx10080\tx10640\tx11200\tx11760\tx12320\tx12880\tx13440\tx14000\tx14560\tx15120\tx15680\tx16240\tx16800\tx17360\tx17920\tx18480\tx19040\tx19600\tx20160\tx20720\tx21280\tx21840\tx22400\tx22960\tx23520\tx24080\tx24640\tx25200\tx25760\tx26320\tx26880\tx27440\tx28000\tx28560\tx29120\tx29680\tx30240\tx30800\tx31360\tx31920\tx32480\tx33040\tx33600\tx34160\tx34720\tx35280\tx35840\tx36400\tx36960\tx37520\tx38080\tx38640\tx39200\tx39760\tx40320\tx40880\tx41440\tx42000\tx42560\tx43120\tx43680\tx44240\tx44800\tx45360\tx45920\tx46480\tx47040\tx47600\tx48160\tx48720\tx49280\tx49840\tx50400\tx50960\tx51520\tx52080\tx52640\tx53200\tx53760\tx54320\tx54880\tx55440\tx56000\ql\qnatural\pardirnatural
+
+\f0\fs24 \cf0 CreateLionUser.pkg\CocoaLigature0 \
+\CocoaLigature1 ==================\CocoaLigature0 \
+\
+\CocoaLigature1 CreateLionUser.pkg is a rewrite of the venerable createUser.pkg for 10.7, in Python. It's a payload free package that can be used to deploy local user accounts, and aims to be compatible with all modular deployment workflows.\CocoaLigature0 \
+\
+\
+\CocoaLigature1 Configuring the Package\CocoaLigature0 \
+\CocoaLigature1 -----------------------\CocoaLigature0 \
+\
+\CocoaLigature1 The package must be configured before it can be deployed. In my example I'll configure it to deploy a local, hidden, admin user named `gadmin`. Start by making a copy of the pkg, and rename it something descriptive like `CreateLionUser_gadmin.pkg`. Then right click on the pkg, Show Package Contents, and navigate to `Contents/Resources`. In here you'll find:\CocoaLigature0 \
+\
+\CocoaLigature1 * en.lproj/Description.plist - You can give your package a nice description if you want.\CocoaLigature0 \
+\CocoaLigature1 * hash_lion_password.py - Use this tool to set the user's password.\CocoaLigature0 \
+\CocoaLigature1 * postflight - This is the main script that will be executed when the package is deployed.\CocoaLigature0 \
+\CocoaLigature1 * userdata.plist - This is a property list that you will use to configure the package.\CocoaLigature0 \
+\
+\CocoaLigature1 Open up `userdata.plist` in your favorite editor - you can use TextEdit, but I recommend a good programmer's editor such as TextMate or TextWrangler. You can also use Property List Editor or Xcode if you have the developer tools installed.\CocoaLigature0 \
+\
+\CocoaLigature1 The following keys can be configured:\CocoaLigature0 \
+\
+\CocoaLigature1 `shortname`, string\CocoaLigature0 \
+\
+\CocoaLigature1 This is a required key, and should contain the shortname of the user, e.g. `gadmin`.\CocoaLigature0 \
+\
+\CocoaLigature1 `RealName`, string\CocoaLigature0 \
+\
+\CocoaLigature1 The human readable user name, defaults to the shortname.\CocoaLigature0 \
+\
+\CocoaLigature1 `UniqueID`, integer\CocoaLigature0 \
+\
+\CocoaLigature1 The user's uid. If one isn't given, the first free uid between 501 and 600 is used.\CocoaLigature0 \
+\
+\CocoaLigature1 `PrimaryGroupID`, integer\CocoaLigature0 \
+\
+\CocoaLigature1 The user's primary group, defaults to 20 (staff).\CocoaLigature0 \
+\
+\CocoaLigature1 `Picture`, string\CocoaLigature0 \
+\
+\CocoaLigature1 A loginwindow picture, defaults to `/Library/User Pictures/Fun/Smack.tif`.\CocoaLigature0 \
+\
+\CocoaLigature1 `UserShell`, string\CocoaLigature0 \
+\
+\CocoaLigature1 Defaults to /bin/bash.\CocoaLigature0 \
+\
+\CocoaLigature1 `NFSHomeDirectory`, string\CocoaLigature0 \
+\
+\CocoaLigature1 Defaults to `/Users/%u`. The following placeholder substitutions are currently supported:\CocoaLigature0 \
+\
+\CocoaLigature1 * `%u` substitute the shortname\CocoaLigature0 \
+\CocoaLigature1 * `%n` substitute the UniqueID\CocoaLigature0 \
+\CocoaLigature1 * `%l` substitute the first letter of the shortname, in lowercase.\CocoaLigature0 \
+\CocoaLigature1 * `%L` substitute the first letter of the shortname, in uppercase.\CocoaLigature0 \
+\
+\CocoaLigature1 `GeneratedUID`, string\CocoaLigature0 \
+\
+\CocoaLigature1 By default a guid is generated when the user is created, but it can be overriden by setting this string.\CocoaLigature0 \
+\
+\CocoaLigature1 `ShadowHashData`, array of data\CocoaLigature0 \
+\
+\CocoaLigature1 This is a required key and needs to be set with a special tool, see below.\CocoaLigature0 \
+\
+\CocoaLigature1 `IsAdmin`, integer\CocoaLigature0 \
+\
+\CocoaLigature1 A 1 means that the user will be made a member of the admin group, a 0 creates a standard user.\CocoaLigature0 \
+\
+\CocoaLigature1 `IsHidden`, integer\CocoaLigature0 \
+\
+\CocoaLigature1 A 1 means that the user will be hidden from the login window.\CocoaLigature0 \
+\
+\CocoaLigature1 `KickstartARD`, integer\CocoaLigature0 \
+\
+\CocoaLigature1 A 1 means that the Apple Remote Desktop agent should be kickstarted and access given to the newly created user.\CocoaLigature0 \
+\
+\
+\CocoaLigature1 Setting the Password\CocoaLigature0 \
+\CocoaLigature1 --------------------\CocoaLigature0 \
+\
+\CocoaLigature1 The password needs to be encrypted before it's stored in userdata.plist. Currently this needs to be done from the command line, so start Terminal and cd to the Resources directory (you can do this by typing "cd " (note the space), and then dragging and dropping the Resources folder from the Finder into the Terminal window). Execute the command:\CocoaLigature0 \
+\
+\CocoaLigature1     ./hash_lion_password.py userdata.plist\CocoaLigature0 \
+\
+\CocoaLigature1 It'll prompt you for a password, and again to verify, and then update the userdata.plist with the encrypted hash.\CocoaLigature0 \
+\
+\
+\CocoaLigature1 Testing the Package\CocoaLigature0 \
+\CocoaLigature1 -------------------\CocoaLigature0 \
+\
+\CocoaLigature1 Copy the configured package over to a test machine (no really, don't have anything important on this machine), and install the package. To see progress information and any error messages, install it from the command line with -dumplog and -verbose:\CocoaLigature0 \
+\
+\CocoaLigature1     sudo installer -dumplog -verbose -target / -package CreateLionUser_gadmin.pkg\CocoaLigature0 \
+\
+\CocoaLigature1 It'll also log output to `/var/log/install.log`. If all is well, verify that the user shows up properly in System Preferences and that you can log in.\CocoaLigature0 \
+\
+\
+\CocoaLigature1 Deploying the Package\CocoaLigature0 \
+\CocoaLigature1 ---------------------\CocoaLigature0 \
+\
+\CocoaLigature1 The package should be compatible with InstaDMG, DeployStudio, Absolute Manage, Casper, System Image Utility, and all other modular deployment tools that can install pkgs.\CocoaLigature0 \
+\
+\
+\CocoaLigature1 History\CocoaLigature0 \
+\CocoaLigature1 -------\CocoaLigature0 \
+\
+\CocoaLigature1 * 2011-06-16: First test release.\CocoaLigature0 \
+\CocoaLigature1 * 2011-06-17: Second test release.\CocoaLigature0 \
+\CocoaLigature1     * Fixed syntax error in hash_lion_password.py.\CocoaLigature0 \
+\CocoaLigature1     * Fixed missing SCRIPT_DIR path when loading userdata.plist.\CocoaLigature0 \
+\CocoaLigature1 * 2011-06-20: Third test release.\CocoaLigature0 \
+\CocoaLigature1     * Flushing Directory Service cache before and after setting the ShadowHashData.\CocoaLigature0 \
+\CocoaLigature1     * Added KickstartARD.\CocoaLigature0 \
+\
+\
+\CocoaLigature1 Credits\CocoaLigature0 \
+\CocoaLigature1 -------\CocoaLigature0 \
+\
+\CocoaLigature1 CreateLionUser.pkg was written by Per Olofsson, per.olofsson@gu.se. It's based on createUser.pkg by Pete Akins, generatePasswordHash.py by Karl Kuehn, and I've borrowed some PyObjC snippets from Greg Neagle.\CocoaLigature0 \
+\
+\
+\CocoaLigature1 License\CocoaLigature0 \
+\CocoaLigature1 -------\CocoaLigature0 \
+\
+\CocoaLigature1 Copyright 2011 Per Olofsson, University of Gothenburg\CocoaLigature0 \
+\
+\CocoaLigature1 Licensed under the Apache License, Version 2.0 (the "License");\CocoaLigature0 \
+\CocoaLigature1 you may not use this file except in compliance with the License.\CocoaLigature0 \
+\CocoaLigature1 You may obtain a copy of the License at\CocoaLigature0 \
+\
+\CocoaLigature1 http://www.apache.org/licenses/LICENSE-2.0\CocoaLigature0 \
+\
+\CocoaLigature1 Unless required by applicable law or agreed to in writing, software\CocoaLigature0 \
+\CocoaLigature1 distributed under the License is distributed on an "AS IS" BASIS,\CocoaLigature0 \
+\CocoaLigature1 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\CocoaLigature0 \
+\CocoaLigature1 See the License for the specific language governing permissions and\CocoaLigature0 \
+\CocoaLigature1 limitations under the License.\CocoaLigature0 \
+}

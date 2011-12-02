@@ -1,0 +1,9 @@
+This is just an Applescript GUI for the CreateLionUser.pkg created by Per Olofsson for the instaDMG application.
+
+I created the version 1.01 which allows to select both .tif and .tiff images for the user icon and fixes an error caused while putting non standard characters as passwod. The problem is that I did not save that as read write so I here publish both, the 1.00 which you can play with and 1.01 which is read only and with these two improvements.
+
+Never intended to violate any copyright license. Per Olofsson published as Apached 2.0 and his readme is included in this repo untouched. Look for description.rtfd
+
+If you don't know instaDMG yet check out http://code.google.com/p/instadmg/ and the forum http://afp548.com/forum/index.php?forum=45
+
+Noel
